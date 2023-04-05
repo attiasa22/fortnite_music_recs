@@ -2,7 +2,7 @@ import cv2
 from helperfunctions import get_white_text, get_pixel_color
 # Load the video file
 video_capture = cv2.VideoCapture("fortnitegameplay.mp4")
-# Load the pre-trained pedestrian detection classifier
+# Load the pre-trained pedestrian  and gun detection classifier
 pedestrian_cascade = cv2.CascadeClassifier('haarcascade_fullbody.xml')
 gun_cascade = cv2.CascadeClassifier('haarcascade_gun.xml')
 
@@ -18,11 +18,10 @@ while True:
 
         # Detect pedestrians in the frame
         pedestrians = pedestrian_cascade.detectMultiScale(frame, scaleFactor=1.1, minNeighbors=5)
-
         # Draw a rectangle around each detected pedestrian
         for (x, y, w, h) in pedestrians:
             cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
-            
+        
         shield = get_white_text(frame, 240, 400, 30,13)
         print("Shield: " + shield)
         health = get_white_text(frame, 235, 415, 30,20)
@@ -31,13 +30,14 @@ while True:
         print("Storm Time: " + storm_time)
         people_left = get_white_text(frame, 734, 145, 15,20)
         print("People Left: " + people_left)
+        # Icon next to storm timer is grey when storm isn't shrinking, purple when it is
         b,g,r = get_pixel_color(frame,690,160)
-        
         if (b>150 and r>50 and g<20):
             print("STORM")
             print(b,g,r)
         else:
             print("NO STORM")
+            
     # Display the resulting frame
     cv2.imshow('Video', frame)
 

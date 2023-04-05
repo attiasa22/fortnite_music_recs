@@ -1,6 +1,7 @@
 import cv2
 import pytesseract
 
+''' function analyzes a cutout of the image, extracts and returns text'''
 def get_white_text(frame,x, y,w,h):
     cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
     cropped_img = frame[y:y+h,x:x+w]
@@ -17,8 +18,8 @@ def get_white_text(frame,x, y,w,h):
     config_digit = '--psm 10 --oem 3 -c tessedit_char_whitelist=0123456789:'
     return pytesseract.image_to_string(binary_img, config=config_digit)
 
+''' function gets colors of a pixel, returns in b,g,r format'''
 def get_pixel_color(frame,x,y):
-
     b,g,r = (frame[y, x])
     cv2.rectangle(frame, (x-1, y-1), (x+1, y+1), (0, 0, 255), 1)
     #cv2.imshow('Video', frame[y-10:y+10,x-10:x+10])
